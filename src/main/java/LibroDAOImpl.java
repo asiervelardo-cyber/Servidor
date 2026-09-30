@@ -2,8 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LibroDAOImpl implements LibroDAO {
+    //Creamos el arrayList para guardar los libros
     ArrayList<Libro> libros = new ArrayList<Libro>();
 
+    //Modificamos las funciones de LibroDAO.java para usarlas en Manin.java
     @Override
     public List<Libro> obtenerLibros() {
         return libros;

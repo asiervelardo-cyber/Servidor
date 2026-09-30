@@ -2,7 +2,10 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        //Creamos libros para almacenar libros
         LibroDAO libros = new LibroDAOImpl();
+
+        //Agregamos 2 libros
         libros.agregar(new Libro(1,"Cien años de soledad","Gabriel García Márquez",1967));
         libros.agregar(new Libro(2,"Don Quijote de la Mancha","Miguel de Cervantes",1605));
 
@@ -24,6 +27,7 @@ public class Main {
         leerLibro(libros.obtenerPorId(2));
 
     }
+    //Creamos la funcion para poder ver la información de los libros
     public static void leerLibro(Libro libro) {
         if(libro!=null){
             System.out.println(libro.id + " - " + libro.titulo + " por " + libro.autor + ", " + libro.anioPublicacion);
