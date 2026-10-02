@@ -1,6 +1,7 @@
 package personal;
 
 public class JefeEstacion {
+    //Creamos la clase JefeEstacion con sus aributos, constructor y metodos para obtener los atributos
     private String nombreCompleto;
     private String DNI;
 

@@ -1,6 +1,7 @@
 package maquinaria;
 
 class Vagon {
+    //Creamos la clase Vagon con sus aributos, constructor(con controlador de que la carga no supere el maximo) y metodos para obtener los atributos
     private int cargaMax;
     private int capacidadActual;
     private String tipoMercancia;

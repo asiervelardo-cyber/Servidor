@@ -3,6 +3,7 @@ package maquinaria;
 import personal.Mecanico;
 
 public class Locomotora implements InyectableMecanico {
+    //Creamos la clase Locomotora con sus aributos, constructor y metodos para obtener los atributos y para meter al mecanico en el atributo(heredado de InyectableMecanico)
     private String matricula;
     private int potenciaMotor;
     private int anioFabricacion;

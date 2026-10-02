@@ -3,13 +3,14 @@ import personal.*;
 
 public class Main {
     public static void main(String[] args) {
-        Mecanico mec = new Mecanico("Ana Ruiz", 600123456,"Frenos");
-        Maquinista maq = new Maquinista("Luis Pérez", "12345678A", 2400, "Senior");
+        //Añadimos objetos para comprobar que funcione correctamente
+        Mecanico mec = new Mecanico("Pepe", 111111111,"Frenos");
+        Maquinista maq = new Maquinista("Jose", "12345678A", 1000, "Jefe");
 
-        Locomotora loc = new Locomotora("LOC-001", 3000, 2015);
+        Locomotora loc = new Locomotora("ABC-123", 5000, 2026);
         loc.inyectarMecanico(mec);
 
         Tren tren = new Tren(loc, maq);
-        tren.añadirVagon(20000, 15000, "Carbón");
+        tren.añadirVagon(10000, 1000, "Piedras");
     }
 }

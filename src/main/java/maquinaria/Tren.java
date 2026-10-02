@@ -5,6 +5,7 @@ import personal.Maquinista;
 import java.util.ArrayList;
 
 public class Tren {
+    //Creamos la clase Tren con sus aributos(y el maximo de vagones para el arraylist), constructor y metodos para obtener los atributos y para añadir vagones al arraylist
     private static final int MAX_VAGONES = 5;
 
     private Locomotora locomotora;

@@ -1,6 +1,7 @@
 package personal;
 
 public class Mecanico {
+    //Creamos la clase Mecanico con sus aributos, constructor y metodos para obtener los atributos
     private String nombreCompleto;
     private int numeroTlf;
     private String especialidad; //frenos o hidraulica

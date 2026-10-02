@@ -1,6 +1,7 @@
 package personal;
 
 public class Maquinista {
+    //Creamos la clase maquinista con sus atributos, constructor y métodos para obtener los atributos
     private String nombreCompleto;
     private String DNI;
     private double sueldoMensual;
