@@ -1,9 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        //Creamos una instancia, y le asignamos un valor a la variable configuración que está dentro de instancia, para mostrarlo por consola
-        Configurador instancia = Configurador.obtenerInstancia();
-        instancia.establecerConfiguracion("hola");
-        String variable =  instancia.obtenerConfiguracion();
-        System.out.println(variable);
+        //Creamos un objeto AndaluciaFactory y usamos sus funciones;
+        AndaluciaFactory andalucia = new AndaluciaFactory();
+        andalucia.createElementoAndaluz("FeriaDeAbril").describir();
+        andalucia.createElementoAndaluz("Flamenco").describir();
+        andalucia.createElementoAndaluz("Gazpacho").describir();
     }
 }
