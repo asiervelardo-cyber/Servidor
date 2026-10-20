@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi plan de estudio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Hola, <span th:text="${nombre}">estudiante</span></h1>
+<h2>Mi plan de estudio</h2>
+
+<!-- #lists.size cuenta los elementos de la lista -->
+<p>Número de asignaturas: <span th:text="${#lists.size(asignaturas)}">0</span></p>
+
+<ul>
+    <!-- iterStat.index empieza en 0, por eso se suma 1 -->
+    <li th:each="asignatura, iterStat : ${asignaturas}"
+        th:text="${iterStat.index + 1} + '. ' + ${asignatura} + ' - ' + ${duraciones[iterStat.index]} + ' minutos'">
+        1. Asignatura - 0 minutos
+    </li>
+</ul>
+
+<!-- #numbers.sequence genera los números del 1 al tamaño de la lista -->
+<p>Escala:
+    <span th:each="n : ${#numbers.sequence(1, #lists.size(asignaturas))}" th:text="${n} + ' '">1</span>
+</p>
+</body>
+</html>
