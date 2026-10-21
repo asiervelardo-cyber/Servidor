@@ -74,7 +74,7 @@ public class FormularioController {
         String nombreNormalizado = nombre.trim();
         String correoNormalizado = correo.trim();
         String materialNormalizado = material.trim();
-        String unidadesNormalizado = unidades.toString();
+        Integer unidadesNormalizado = unidades;
         String fechaRNormalizado = fechaR.trim();
         String fechaDNormalizado = fechaD.trim();
         String motivoNormalizado = motivo.trim();
@@ -98,8 +98,31 @@ public class FormularioController {
         }else if (!materialNormalizado.equals("PORTATIL")||!materialNormalizado.equals("MICRO")||!materialNormalizado.equals("CAMARA")) {
             errores.put("material", "El material tiene que ser alguno de la lista.");
         }
-        //me quedo por aqui
-        if (unidadesNormalizado.isEmpty()) {}
+
+        if (unidadesNormalizado==null || unidadesNormalizado<=0) {
+            errores.put("unidades", "Las unidades no pueden estar vacias.");
+        }else if (unidadesNormalizado < 1 || unidadesNormalizado>3) {
+            errores.put("unidades", "Las unidades deben ser entre 1 y 3.");
+        }
+
+        if(fechaRNormalizado.isEmpty()){
+            errores.put("fechaR","La fecha de recogida no puede estar vacia.");
+        }
+
+        if(fechaDNormalizado.isEmpty()){
+            errores.put("fechaD","La fecha de devolucion no puede estar vacia.");
+        }
+
+        if(motivoNormalizado.isEmpty()){
+            errores.put("motivo","El motivo no puede estar vacio.");
+        }else if(motivoNormalizado.length()>30 || motivoNormalizado.length()<400){
+            errores.put("motivo", "El motivo debe estar entre 30 y 400 caracteres.");
+        }
+
+        if(!normasNormalizado){
+            errores.put("normas","Debe aceptar las normas");
+        }
+
         if (!errores.isEmpty()) {
             anadirValoresSimples(model, nombre, correo, material, unidades, fechaR, fechaD,  motivo, normas);
             model.addAttribute("errores", errores);
