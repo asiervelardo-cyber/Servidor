@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class FormularioController {
+public class SolicitudController {
 
-    private static final List<String> TEMAS = List.of(
-            "CONSULTA", "INCIDENCIA", "SUGERENCIA");
     private static final Pattern CORREO_SIMPLE =
             Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
+
+    @GetMapping("/")
+    public String solicitud(Model model) {
+        model.addAttribute("materiales", new SolicitudForm());
+        return "catalogo";
+    }
 
     @GetMapping("/solicitud/nueva")
     public String mostrarFormulario(Model model) {
@@ -30,7 +34,7 @@ public class FormularioController {
 
     @GetMapping("/solicitud-sin-dto/nueva")
     public String mostrarFormularioSinDto(Model model) {
-        anadirValoresSimples(model, "", "", "");
+        anadirValoresSimples(model, "", "", "",0,"","","",false);
         model.addAttribute("errores", Map.of());
         return "solicitud-sin-dto";
     }
@@ -40,16 +44,6 @@ public class FormularioController {
             @Valid @ModelAttribute("solicitud") SolicitudForm solicitud,
             BindingResult resultadoBinding,
             Model model) {
-        anadirOpciones(model);
-
-        // Regla entre dos campos: Bean Validation de propiedades no expresa esta relación.
-        if ("TELEFONO".equals(solicitud.getUnidades())
-                && (solicitud.getTelefono() == null || solicitud.getTelefono().isBlank())) {
-            resultadoBinding.rejectValue(
-                    "telefono",
-                    "telefono.requerido",
-                    "Indica un teléfono si prefieres que te contactemos por teléfono.");
-        }
 
         if (resultadoBinding.hasErrors()) {
             return "formulario";
