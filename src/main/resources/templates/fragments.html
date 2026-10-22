@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Muestra solo el primer mensaje de error del campo, junto a él.
+     Uso: <span th:replace="~{fragments :: error('nombre')}"></span> -->
+<span th:fragment="error(campo)" class="error-campo"
+      th:if="${#fields.hasErrors(campo)}" th:text="${#fields.errors(campo)[0]}">Error</span>
+</body>
+</html>

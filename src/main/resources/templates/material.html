@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${material[1]}">Ficha</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main>
+    <h1 th:text="${material[1]}">Nombre</h1>
+    <dl class="ficha">
+        <dt>Código</dt><dd th:text="${material[0]}">CODIGO</dd>
+        <dt>Descripción</dt><dd th:text="${material[2]}">Descripción</dd>
+        <!-- turno viene de ?turno=...; es texto del usuario, por eso th:text (escapado) -->
+        <dt>Turno</dt><dd th:text="${turno}">general</dd>
+    </dl>
+
+    <p>
+        <a class="boton boton-principal" th:href="@{/solicitud/nueva}">Solicitar préstamo</a>
+        <a class="boton" th:href="@{/}">Volver al catálogo</a>
+    </p>
+</main>
+</body>
+</html>

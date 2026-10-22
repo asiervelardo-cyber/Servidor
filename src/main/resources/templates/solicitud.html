@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solicitud de préstamo</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<main>
+    <h1>Solicitud de préstamo</h1>
+
+    <!-- novalidate: los atributos HTML (required, maxlength...) solo ayudan;
+         la validación que cuenta es la del servidor. -->
+    <form th:action="@{/solicitudes}" th:object="${solicitud}" method="post" novalidate>
+
+        <p class="aviso-errores" th:if="${#fields.hasErrors('*')}">Revisa los campos marcados antes de enviar.</p>
+
+        <label for="nombre">Nombre de quien solicita</label>
+        <input type="text" id="nombre" th:field="*{nombre}" maxlength="60" required>
+        <span th:replace="~{fragments :: error('nombre')}"></span>
+        <br>
+
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" th:field="*{correo}" maxlength="120" required>
+        <span th:replace="~{fragments :: error('correo')}"></span>
+        <br>
+
+        <label for="material">Material solicitado</label>
+        <select id="material" th:field="*{material}" required>
+            <option value="">-- Selecciona un material --</option>
+            <!-- Las opciones salen del array; th:field marca la opción seleccionada al volver con errores -->
+            <option th:each="m : ${materiales}" th:value="${m[0]}" th:text="${m[1]}">Material</option>
+        </select>
+        <span th:replace="~{fragments :: error('material')}"></span>
+        <br>
+
+        <label for="unidades">Unidades (1 a 3)</label>
+        <input type="number" id="unidades" th:field="*{unidades}" min="1" max="3" step="1" required>
+        <span th:replace="~{fragments :: error('unidades')}"></span>
+        <br>
+
+        <label for="fechaRecogida">Fecha de recogida</label>
+        <input type="date" id="fechaRecogida" th:field="*{fechaRecogida}" required>
+        <span th:replace="~{fragments :: error('fechaRecogida')}"></span>
+        <br>
+
+        <label for="fechaDevolucion">Fecha de devolución</label>
+        <input type="date" id="fechaDevolucion" th:field="*{fechaDevolucion}" required>
+        <span th:replace="~{fragments :: error('fechaDevolucion')}"></span>
+        <br>
+
+        <label for="motivo">Motivo del préstamo (30 a 400 caracteres)</label><br>
+        <textarea id="motivo" th:field="*{motivo}" rows="5" maxlength="400" required></textarea>
+        <span th:replace="~{fragments :: error('motivo')}"></span>
+        <br>
+
+        <div class="casilla">
+            <input type="checkbox" id="aceptaNormas" th:field="*{aceptaNormas}">
+            <label for="aceptaNormas">Acepto las normas de préstamo</label>
+        </div>
+        <span th:replace="~{fragments :: error('aceptaNormas')}"></span>
+        <br>
+
+        <p>
+            <button type="submit" class="boton boton-principal">Enviar solicitud</button>
+            <a class="boton" th:href="@{/}">Volver al catálogo</a>
+        </p>
+    </form>
+</main>
+</body>
+</html>

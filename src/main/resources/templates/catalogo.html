@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catálogo de materiales</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
 </head>
 <body>
-    <h1>Catálogo</h1>
+<main>
+    <h1>Catálogo de materiales</h1>
+    <p class="intro">Recursos disponibles para préstamo.</p>
+
+    <ul class="tarjetas">
+        <!-- m es una fila del array String[][]: m[0] código, m[1] nombre, m[2] descripción -->
+        <li class="tarjeta" th:each="m : ${materiales}">
+            <h2 th:text="${m[1]}">Nombre</h2>
+            <p class="codigo" th:text="${m[0]}">CODIGO</p>
+            <p th:text="${m[2]}">Descripción</p>
+            <!-- La URL se genera con @{...}; la variable de ruta se rellena con el código -->
+            <a class="boton" th:href="@{/materiales/{codigo}(codigo=${m[0]})}">Ver ficha</a>
+        </li>
+    </ul>
+
+    <p><a class="boton boton-principal" th:href="@{/solicitud/nueva}">Solicitar un préstamo</a></p>
+</main>
 </body>
 </html>
