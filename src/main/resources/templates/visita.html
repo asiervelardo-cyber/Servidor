@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- Página de visita: información práctica del centro para planificar la asistencia. -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="#{visita.titulo.pagina}">Tu visita</title>
+    <link rel="stylesheet" th:href="@{/css/p7.css}">
+</head>
+<body>
+<main class="page">
+
+    <!-- Misma cabecera que inicio, con otros textos. -->
+    <header th:replace="~{fragments/comun :: cabecera(#{visita.titulo}, #{visita.intro})}">
+        Cabecera sustituida por el fragmento.
+    </header>
+
+    <!-- La ruta '/visita' marca este enlace como activo y hace que el selector
+         de idioma vuelva a esta misma página. -->
+    <nav th:replace="~{fragments/comun :: navegacion('/visita')}">Navegación sustituida</nav>
+
+    <!-- Aquí se usa th:insert (no replace): el div "bloque" del anfitrión se
+         conserva como contenedor y el fragmento entra dentro. Así puedo darle
+         estilo propio al contenedor sin tocar el fragmento. -->
+    <section class="grid">
+        <div class="bloque"
+             th:insert="~{fragments/comun :: info(#{visita.horario.titulo}, #{visita.horario.texto})}">
+            Horario
+        </div>
+        <div class="bloque"
+             th:insert="~{fragments/comun :: info(#{visita.llegar.titulo}, #{visita.llegar.texto})}">
+            Cómo llegar
+        </div>
+        <div class="bloque"
+             th:insert="~{fragments/comun :: info(#{visita.acceso.titulo}, #{visita.acceso.texto})}">
+            Accesibilidad
+        </div>
+        <div class="bloque"
+             th:insert="~{fragments/comun :: info(#{visita.entradas.titulo}, #{visita.entradas.texto})}">
+            Entradas
+        </div>
+    </section>
+
+    <footer th:replace="~{fragments/comun :: pie}">Pie común</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="#{inicio.titulo.pagina}">Inicio</title>
+    <link rel="stylesheet" th:href="@{/css/p7.css}">
+</head>
+<body>
+<main class="page">
+    <!-- th:replace sustituye este div por la raíz del fragmento (la cabecera). -->
+    <header th:replace="~{fragments/comun :: cabecera(#{inicio.titulo}, #{inicio.intro})}">
+        Cabecera sustituida por el fragmento.
+    </header>
+
+    <nav th:replace="~{fragments/comun :: navegacion('/')}">Navegación sustituida</nav>
+
+    <section class="grid">
+        <th:block th:each="clave : ${actividades}">
+            <article th:replace="~{fragments/comun :: actividad(
+                #{${'actividad.' + clave + '.titulo'}},
+                #{${'actividad.' + clave + '.descripcion'}},
+                #{${'actividad.' + clave + '.fecha'}},
+                #{${'actividad.' + clave + '.lugar'}})}">Tarjeta</article>
+        </th:block>
+    </section>
+
+    <footer th:replace="~{fragments/comun :: pie}">Pie común</footer>
+</main>
+</body>
+</html>

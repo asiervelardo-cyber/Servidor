@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- Fragmentos compartidos por inicio.html y visita.html. -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<article class="card" th:fragment="info(titulo, texto)">
+    <h2 th:text="${titulo}">Título</h2>
+    <p th:text="${texto}">Texto</p>
+</article>
+<body>
+<header class="hero" th:fragment="cabecera(titulo, descripcion)">
+    <div class="eyebrow" th:text="#{cabecera.etiqueta}">Centro cultural</div>
+    <h1 th:text="${titulo}">Título de la página</h1>
+    <p class="intro" th:text="${descripcion}">Descripción de la página.</p>
+</header>
+
+<!-- El fragmento de navegación señala la ruta activa que recibe como parámetro. -->
+<nav class="nav" th:fragment="navegacion(ruta)"
+     th:attr="aria-label=#{nav.etiqueta}">
+    <a th:href="@{/}" th:text="#{nav.inicio}"
+       th:attr="aria-current=${ruta == '/'} ? 'page'">Actividades</a>
+    <a th:href="@{/visita}" th:text="#{nav.visita}"
+       th:attr="aria-current=${ruta == '/visita'} ? 'page'">Tu visita</a>
+
+    <!-- Selector de idioma: ?lang lo procesa LocaleChangeInterceptor. -->
+    <span class="idiomas">
+        <a th:href="@{${ruta}(lang='es')}" lang="es" th:text="#{idioma.es}">Español</a>
+        <a th:href="@{${ruta}(lang='en')}" lang="en" th:text="#{idioma.en}">English</a>
+    </span>
+</nav>
+
+<footer class="footer" th:fragment="pie">
+    <p th:text="#{pie.texto}">Pie de página.</p>
+</footer>
+
+<!-- Tarjeta de actividad: una sola estructura, los valores cambian por parámetro. -->
+<article class="card" th:fragment="actividad(titulo, descripcion, fecha, lugar)">
+    <h2 th:text="${titulo}">Título</h2>
+    <p th:text="${descripcion}">Descripción</p>
+    <p class="dato" th:text="${fecha}">Fecha</p>
+    <p class="dato" th:text="${lugar}">Lugar</p>
+</article>
+</body>
+</html>
