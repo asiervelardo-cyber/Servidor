@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!-- La página se genera en el servidor con Thymeleaf usando los datos del controlador -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11130f">
+  <title>Recomendar Canciones — Lista de canciones</title>
+  <link rel="stylesheet" th:href="@{/css/inventario.css}">
+</head>
+<body>
+<div class="site-shell">
+  <header class="topbar">
+    <a class="brand" th:href="@{/}" aria-label="Recomendar Canciones, inicio">
+      <span class="brand-mark" aria-hidden="true">♪</span>
+      <span>RECOMENDAR<span class="brand-sub">CANCIONES</span></span>
+    </a>
+    <div class="connection-status">
+      <span class="status-light" aria-hidden="true"></span>
+      <span>LISTA ONLINE</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="intro-copy">
+        <p class="kicker"><span>01</span> · MI MÚSICA / PLAYLIST</p>
+        <h1>Lo que suena<br><em>merece compartirse.</em></h1>
+        <p class="intro-text">
+          Consulta las canciones guardadas y añade nuevas
+          para recomendarlas.
+        </p>
+        <a class="jump-link" href="#nueva-cancion">
+          <span aria-hidden="true">↓</span> Añadir una nueva canción
+        </a>
+      </div>
+      <div class="intro-art" aria-hidden="true">
+        <div class="art-sun"></div>
+        <div class="art-disc disc-one"></div>
+        <div class="art-disc disc-two"></div>
+        <div class="art-disc disc-three"></div>
+        <div class="art-label">PRESS<br>PLAY</div>
+        <div class="art-caption">ON<br>REPEAT</div>
+        <div class="art-grid"></div>
+      </div>
+    </section>
+
+    <section class="inventory-section" aria-labelledby="lista-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">LO QUE HAY EN LA LISTA</p>
+          <h2 id="lista-title">Canciones <span class="heading-slash">//</span> <span
+                  th:text="${#lists.size(canciones)}">0</span> temas</h2>
+        </div>
+        <span class="heading-stamp">ALL GENRES<br>ALL ARTISTS</span>
+      </div>
+
+      <div class="notice success" role="status" th:if="${mensajeExito}" th:text="${mensajeExito}">
+        Canción añadida a la lista.
+      </div>
+
+      <div class="empty-state" th:if="${#lists.isEmpty(canciones)}">
+        <span class="empty-icon" aria-hidden="true">?</span>
+        <div>
+          <h3>La lista está en silencio.</h3>
+          <p>Aún no hay canciones registradas. Añade la primera desde el formulario de abajo.</p>
+        </div>
+      </div>
+
+      <div class="game-grid" th:unless="${#lists.isEmpty(canciones)}">
+        <!-- Una ficha por cada canción de la lista -->
+        <article class="game-card" th:each="cancion, iteracion : ${canciones}">
+          <div class="game-art" th:classappend="${'art-variant-' + (iteracion.index % 5)}">
+            <span class="art-index" th:text="${#numbers.formatInteger(iteracion.index + 1, 2)}">01</span>
+            <span class="art-console" th:text="${cancion.tipo}">TIPO</span>
+            <span class="art-initial" th:text="${#strings.substring(cancion.titulo, 0, 1)}">C</span>
+            <span class="art-bottom"
+                  th:text="${#strings.isEmpty(cancion.genero) ? 'SIN GÉNERO' : cancion.genero}">GÉNERO</span>
+          </div>
+          <div class="game-info">
+            <div class="game-title-line">
+              <h3 th:text="${cancion.titulo}">Título de la canción</h3>
+              <!-- Quita ceros sobrantes: 10.00 → 10, 9.50 → 9,5 -->
+              <span class="game-price"
+                    th:text="${cancion.valoracion.stripTrailingZeros().toPlainString().replace('.', ',')} + ' / 10'">0,0 / 10</span>
+            </div>
+            <div class="game-meta">
+              <span th:text="${cancion.autor}">Autor</span>
+              <span class="meta-dot" aria-hidden="true">·</span>
+              <span th:text="${#temporals.format(cancion.fecha, 'dd/MM/yyyy')}">01/01/2024</span>
+            </div>
+            <div class="stock-line">
+              <span class="stock-label">DURACIÓN</span>
+              <!-- Duración guardada en segundos, mostrada como m:ss -->
+              <span class="stock-value"
+                    th:text="${cancion.duracion / 60} + ':' + ${#numbers.formatInteger(cancion.duracion % 60, 2)}">0:00</span>
+              <span class="stock-state" th:classappend="${cancion.recomendada ? '' : ' sold-out'}"
+                    th:text="${cancion.recomendada ? 'RECOMENDADA' : 'NO RECOMENDADA'}">RECOMENDADA</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="form-section" id="nueva-cancion" aria-labelledby="form-title">
+      <div class="form-aside">
+        <p class="kicker">NUEVA CANCIÓN / 02</p>
+        <h2>¿Qué estás<br>escuchando?</h2>
+        <p>Rellena la ficha y guárdala en la lista de canciones.</p>
+        <div class="form-aside-note">
+          <span class="note-symbol" aria-hidden="true">+</span>
+          <span>Los cambios se guardan<br>en la base de datos.</span>
+        </div>
+      </div>
+
+      <div class="form-panel">
+        <div class="form-panel-head">
+          <div>
+            <p class="kicker">FICHA DE CANCIÓN</p>
+            <h2 id="form-title">Registrar canción</h2>
+          </div>
+          <span class="form-code">FORM_001</span>
+        </div>
+
+        <!-- th:object enlaza el formulario con NuevaCancionFormulario; se envía por POST -->
+        <form th:action="@{/cancion}" th:object="${nuevaCancion}" method="post">
+          <div class="notice error-summary" role="alert" th:if="${#fields.hasErrors('*')}">
+            <strong>Hay datos que revisar antes de guardar:</strong>
+            <ul>
+              <li th:each="error : ${#fields.errors('*')}" th:text="${error}">Error del formulario</li>
+            </ul>
+          </div>
+
+          <div class="form-grid">
+            <div class="field field-wide">
+              <label for="titulo">Título <span>*</span></label>
+              <input id="titulo" type="text" th:field="*{titulo}"
+                     maxlength="120" placeholder="Ej. Bohemian Rhapsody"
+                     required th:errorclass="invalid">
+              <p class="field-error" th:errors="*{titulo}"></p>
+            </div>
+
+            <div class="field field-wide">
+              <label for="autor">Autor/a <span>*</span></label>
+              <input id="autor" type="text" th:field="*{autor}"
+                     maxlength="120" placeholder="Ej. Queen"
+                     required th:errorclass="invalid">
+              <p class="field-error" th:errors="*{autor}"></p>
+            </div>
+
+            <div class="field">
+              <label for="tipo">Tipo <span>*</span></label>
+              <select id="tipo" th:field="*{tipo}" required th:errorclass="invalid">
+                <option value="">Elige tipo</option>
+                <option th:each="opcion : ${tipos}"
+                        th:value="${opcion}" th:text="${opcion}">Tipo</option>
+              </select>
+              <p class="field-error" th:errors="*{tipo}"></p>
+            </div>
+
+            <div class="field field-wide">
+              <span class="field-label">Géneros <small>(opcional, puedes marcar varios)</small></span>
+              <!-- Un checkbox por género: se pueden marcar varios -->
+              <div class="chip-group">
+                <label class="chip" th:each="opcion : ${generos}">
+                  <input type="checkbox" th:field="*{genero}" th:value="${opcion}">
+                  <span th:text="${opcion}">Género</span>
+                </label>
+              </div>
+              <p class="field-error" th:errors="*{genero}"></p>
+            </div>
+
+            <div class="field">
+              <label for="duracion">Duración <span>*</span></label>
+              <div class="input-with-suffix">
+                <input id="duracion" type="text" th:field="*{duracion}"
+                       pattern="\d{1,2}:[0-5]\d" maxlength="5"
+                       title="Minutos:segundos, por ejemplo 3:35"
+                       placeholder="3:35" required th:errorclass="invalid">
+                <span>MIN:SEG</span>
+              </div>
+              <p class="field-error" th:errors="*{duracion}"></p>
+            </div>
+
+            <div class="field">
+              <label for="valoracion">Valoración <span>*</span></label>
+              <div class="input-with-suffix">
+                <input id="valoracion" type="number" th:field="*{valoracion}"
+                       min="0" max="10" step="0.1"
+                       placeholder="8.5" required th:errorclass="invalid">
+                <span>/ 10</span>
+              </div>
+              <p class="field-error" th:errors="*{valoracion}"></p>
+            </div>
+
+            <div class="field">
+              <label for="fecha">Fecha de lanzamiento <span>*</span></label>
+              <input id="fecha" type="date" th:field="*{fecha}"
+                     required th:errorclass="invalid">
+              <p class="field-error" th:errors="*{fecha}"></p>
+            </div>
+
+            <div class="field">
+              <label for="recomendada1">
+                <input type="checkbox" th:field="*{recomendada}">
+                La recomiendo
+              </label>
+              <p class="field-error" th:errors="*{recomendada}"></p>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <p><span>*</span> Campos obligatorios. Los géneros son opcionales.</p>
+            <button class="submit-button" type="submit">
+              <span>Guardar canción</span>
+              <span class="button-arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>RECOMENDAR CANCIONES</span>
+    <span>MADE FOR LISTENERS <b aria-hidden="true">✳</b></span>
+  </footer>
+</div>
+</body>
+</html>
